@@ -1,0 +1,70 @@
+@media screen {
+H1{
+background: #faf0e6;}
+}
+h1 {
+color:#A52A2A;
+font-size : normal;
+font-family:Arial;
+font-weight:normal;
+}
+#chatText
+{
+    resize: none;
+}
+#chatMessage
+{
+    resize:none;
+}
+.b2{
+background: #7FFF00;
+position:absolute;
+top: 30px;
+left: 1200px;
+display: inline-block;
+border:3px solid #85A0C9;
+border-radius: 30px;
+-webkit-border-radius: 90px;
+-moz-border-radius: 90px;
+	}
+.b3{
+position:absolute;
+top: 30px;
+left: 1270px;
+display: inline-block;
+border:3px solid red;
+border-radius: 30px;
+-webkit-border-radius: 30px;
+-moz-border-radius: 30px;
+	}	
+.b7{
+position:absolute;
+top: 130px;
+left: 1240px;
+display: inline-block;
+border:3px ;
+border-radius: 30px;
+-webkit-border-radius: 30px;
+-moz-border-radius: 30px;
+	}	
+body{
+background:#BC8F8F;
+}
+button{
+color:#000000;
+font-size : normal;
+font-family:Arial;
+font-weight:600;
+}
+.b1{
+background: #E9967A;
+}
+textarea {
+    overflow-y: scroll;
+	outline: none;
+	-moz-appearance: none;
+	border: 1px solid #999; 
+}
+
+
+

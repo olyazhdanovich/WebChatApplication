@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> ChatRooom </title>
+<link rel="stylesheet" href="css/stylenew.css">
+<script type="text/javascript" src="js/scripts.js"></script>
+</head>
+<body>
+<h1> CHATROOM 
+<span id="menu" style="display: none">
+<button class="b3" onclick="logout()">Exit</button>  
+<button id="status" class="b2" style="display:block">Online</button>
+</h1> 
+ </span>
+ <span id="user" style="display: block">
+<input id="user_name" type="text" size="40" placeholder="User Name">
+<p><button class="b1" onclick="login()">Log in</button></p>
+</span>
+<span id="chatArea" style="display: none">
+<p><textarea id="chatText" name="textarea" cols="150" rows="30" ></textarea> 
+<!--<button id="str" class="b7" onclick="show()"  style="display:block">History</button>-->
+</p>
+<button id="chatDelete" onclick="del()" class="b1">Delete</button> <button id="chatEdit" onclick="change()" class="b1">Edit</button>
+<p><textarea id="chatMessage" name="massage" cols="50" rows="5" placeholder="Enter a message..." ></textarea>
+ <button id="chatEnter" class="b1" onclick="message()" >Enter</button> </p>
+ </span>
+</body>
+</html>
