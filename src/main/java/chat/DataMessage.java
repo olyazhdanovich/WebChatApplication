@@ -14,6 +14,7 @@ import org.json.simple.JSONAware;
 import org.json.simple.JSONObject;
 
 public class DataMessage implements JSONAware {
+        private int id;
         private String author;
 	private String text;
 	
@@ -21,7 +22,8 @@ public class DataMessage implements JSONAware {
 		author = "author";
 		text = "";
 	}
-	public DataMessage(String text,String author) {
+	public DataMessage(int id, String text,String author) {
+                this.id = id;
 		this.author = author;
 		this.text = text;
 	}
@@ -36,6 +38,9 @@ public class DataMessage implements JSONAware {
 	}
         public void setAuthor(String author) {
             this.author = author;
+        }
+        public int getId() {
+            return id;
         }
 	
 	public static DataMessage parseDataMessage(JSONObject obj){

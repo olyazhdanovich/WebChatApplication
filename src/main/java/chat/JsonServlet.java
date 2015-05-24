@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,6 +61,7 @@ public class JsonServlet extends HttpServlet {
     private List<DataMessage> history = new ArrayList<DataMessage>();
     private MessageExchange messageExchange = new MessageExchange();
     private Document doc;
+    private Integer messageId = 0;
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -75,12 +77,12 @@ public class JsonServlet extends HttpServlet {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
  
 			Element eElement = (Element) nNode;
-                        
+                        int id = Integer.parseInt(eElement.getElementsByTagName("id").item(0).getTextContent());
                         String author = eElement.getElementsByTagName("author").item(0).getTextContent();
                         String text = eElement.getElementsByTagName("text").item(0).getTextContent();
                         String dateNode = eElement.getElementsByTagName("date").item(0).getTextContent();
                         System.out.println(dateNode + " " + author + " : " + text);
-                        history.add(new DataMessage(text, author));
+                        history.add(new DataMessage(id, text, author));
 		}
             }
         }
@@ -95,7 +97,6 @@ public class JsonServlet extends HttpServlet {
         }
     }
     
-    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) 
                            throws ServletException, IOException {
         try {
@@ -106,7 +107,6 @@ public class JsonServlet extends HttpServlet {
             Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             DataMessage message = messageExchange.getClientMessage(request.getInputStream());
@@ -118,6 +118,9 @@ public class JsonServlet extends HttpServlet {
                 doc.appendChild(doc.createElement("messages"));
             }
             Element root = doc.getElementById("messages");
+            Element id = doc.createElement("id");
+            id.appendChild(doc.createTextNode(messageId.toString()));
+            ++messageId;
             Element messageNode = doc.createElement("message");
             Element author = doc.createElement("author");
             author.appendChild(doc.createTextNode(message.getAuthor()));
@@ -132,6 +135,7 @@ public class JsonServlet extends HttpServlet {
             messageNode.appendChild(author);
             messageNode.appendChild(text);
             messageNode.appendChild(dateNode);
+            messageNode.appendChild(id);
             
             root.appendChild(messageNode);
             
@@ -161,5 +165,12 @@ public class JsonServlet extends HttpServlet {
         catch (TransformerConfigurationException e) {
             Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
         }
+    }
+    
+    public void doDelete(HttpServletRequest req, HttpServletResponse res){
+        NodeList nList = doc.getElementsByTagName("message");
+        Node nNode = nList.item(nList.getLength() - 1);
+        doc.removeChild(nNode);
+        history.remove(history.size() - 1);
     }
 }

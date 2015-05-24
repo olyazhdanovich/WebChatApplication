@@ -129,6 +129,15 @@ function ajax(method, url, data, continueWith) {
                 stat.innerHTML = "Online";
                 stat.style.background = "#7FFF00";
             }
+            if (xmlhttp.status == 400) {
+                self.location = "bad_request.jsp";
+            }
+            if (xmlhttp.status == 404) {
+                self.location = "not_found.jsp";
+            }
+            if (xmlhttp.status == 500) {
+                self.location = "server_error.jsp";
+            }
             if (xmlhttp.status == 0) {
                 stat.innerHTML = "Offline";
                 stat.style.background = "red";
@@ -158,3 +167,10 @@ function getXmlHttp() {
     }
     return xmlhttp;
 }
+
+(function poll(){
+    setTimeout(function(){
+        updateMessage();
+        poll();
+    }, 1000);
+})();
