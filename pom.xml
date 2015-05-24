@@ -26,6 +26,11 @@
         <scope>system</scope>
         <systemPath>${project.basedir}/src/main/resources/json-simple-1.1.1.jar</systemPath>
     </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.17</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>WebChatApplication</finalName>

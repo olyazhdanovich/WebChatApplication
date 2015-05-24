@@ -58,6 +58,7 @@ import org.xml.sax.SAXException;
 
 public class JsonServlet extends HttpServlet {
     //private static final long serialVersionUID = 1L;
+    final static Logger logger = Logger.getLogger(chat.JsonServlet.class.toString());
     private List<DataMessage> history = new ArrayList<DataMessage>();
     private MessageExchange messageExchange = new MessageExchange();
     private Document doc;
@@ -87,13 +88,17 @@ public class JsonServlet extends HttpServlet {
             }
         }
         catch (ParserConfigurationException e){
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);   
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);  
+            logger.log(Level.SEVERE, e.getMessage());
         } catch (SAXException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         } catch (IOException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         } catch (DOMException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     
@@ -104,7 +109,8 @@ public class JsonServlet extends HttpServlet {
             stream.println(messageExchange.getServerResponse(history));
         }
         catch (IOException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -150,20 +156,25 @@ public class JsonServlet extends HttpServlet {
                 // StreamResult result = new StreamResult(System.out);
                 transformer.transform(source, result);
             } catch (TransformerException ex) {
-                Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, ex.getMessage());
             }
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.INFO, null, dateformat.format(d) + message.getAuthor() + " : " + message.getText());
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.INFO, null, dateformat.format(d) + message.getAuthor() + " : " + message.getText());
+            logger.log(Level.INFO, dateformat.format(d) + message.getAuthor() + " : " + message.getText());
             System.out.println(dateformat.format(d) + message.getAuthor() + " : " + message.getText());
         }
         catch (ParseException e){
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.WARNING, null, "Invalid user message: " + e.getMessage());
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.WARNING, null, "Invalid user message: " + e.getMessage());
+            logger.log(Level.WARNING, e.getMessage());
             System.err.println("Invalid user message: " + e.getMessage());
         }
         catch (ParserConfigurationException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
         catch (TransformerConfigurationException e) {
-            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            //Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, e.getMessage());
         }
     }
     
