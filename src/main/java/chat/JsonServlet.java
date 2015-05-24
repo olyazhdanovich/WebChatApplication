@@ -48,21 +48,24 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
  
 import org.w3c.dom.Attr;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class JsonServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+    //private static final long serialVersionUID = 1L;
     private List<DataMessage> history = new ArrayList<DataMessage>();
     private MessageExchange messageExchange = new MessageExchange();
     private Document doc;
     
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        File xmlFile;
         try {
-            File xmlFile = new File("file.xml");
+            xmlFile = new File("file.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             doc = dBuilder.parse(xmlFile);
@@ -81,18 +84,29 @@ public class JsonServlet extends HttpServlet {
 		}
             }
         }
-        catch (Exception e){}
+        catch (ParserConfigurationException e){
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);   
+        } catch (SAXException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        } catch (IOException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        } catch (DOMException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
     
+    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse res) 
                            throws ServletException, IOException {
         try {
             ServletOutputStream stream = res.getOutputStream();
             stream.println(messageExchange.getServerResponse(history));
         }
-        catch (Exception e) {}
+        catch (IOException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
-    
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             DataMessage message = messageExchange.getClientMessage(request.getInputStream());
@@ -126,20 +140,26 @@ public class JsonServlet extends HttpServlet {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File("file.xml"));
             try {
+                StreamResult result = new StreamResult(new File("file.xml"));
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
                 transformer.transform(source, result);
             } catch (TransformerException ex) {
                 Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.INFO, null, dateformat.format(d) + message.getAuthor() + " : " + message.getText());
             System.out.println(dateformat.format(d) + message.getAuthor() + " : " + message.getText());
         }
         catch (ParseException e){
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.WARNING, null, "Invalid user message: " + e.getMessage());
             System.err.println("Invalid user message: " + e.getMessage());
         }
-        catch (ParserConfigurationException e) {}
-        catch (TransformerConfigurationException e) {}
+        catch (ParserConfigurationException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
+        catch (TransformerConfigurationException e) {
+            Logger.getLogger(JsonServlet.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 }

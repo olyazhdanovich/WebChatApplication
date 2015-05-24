@@ -4,4 +4,12 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <servlet>
+      <servlet-name>jsonservlet</servlet-name>
+      <servlet-class>chat.JsonServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>jsonservlet</servlet-name>
+      <url-pattern>/jsonservlet</url-pattern>
+  </servlet-mapping>
 </web-app>
